@@ -1,0 +1,14 @@
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - ~/.docker/config.json:/config.json
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 --cleanup
+    environment:
+      WATCHTOWER_NOTIFICATION_REPORT: "true"
+      WATCHTOWER_NOTIFICATION_URL: >
+        discord://${DISCORD_TOKEN}@${DISCORD_ID} 
+        telegram://${TELEGRAM_TOKEN}@telegram?chats=${TELEGRAM_ID}&parseMode=html&preview=Yes
+    restart: unless-stopped

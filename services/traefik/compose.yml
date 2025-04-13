@@ -1,0 +1,21 @@
+---
+services:
+  traefik-prod-01:
+    image: docker.io/library/traefik:v3.3.3
+    container_name: traefik
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /run/docker.sock:/run/docker.sock:ro
+      - ./config/:/etc/traefik/:ro
+      - ./certs/:/var/traefik/certs/:rw
+    environment:
+      - CF_DNS_API_TOKEN # Cloudflare API token with DNS zone modification permissions
+    networks:
+      - frontend
+    restart: unless-stopped
+
+networks:
+  frontend:
+    external: true
